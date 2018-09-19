@@ -3,5 +3,6 @@
   :version "0.0.1"
   :author "Jeff Gonis <jeffgonis@fastmail.com"
   :licence "LGPL 3.0"
+  :depends-on ("alexandria")
   :components ((:file "packages")
-               (:file "problem1" :depends-on ("packages"))))
+               (:file "problems" :depends-on ("packages"))))
