@@ -71,3 +71,18 @@
                      (+ count 1) 
                      count)))
        ((>= count number-of-primes-to-find) i)))
+
+(defun problem8 (input-seq adjacent-length)
+  (labels 
+      ((problem8-helper (input-seq  
+                         start 
+                         end 
+                         current-max)
+         (cond ((> end (length input-seq)) current-max)
+               (t (problem8-helper 
+                   input-seq 
+                   (+ start 1)
+                   (+ end 1)
+                   (max current-max 
+                        (reduce #'* input-seq :start start :end end)))))))
+    (problem8-helper input-seq 0 (+ 0 adjacent-length) -1)))
