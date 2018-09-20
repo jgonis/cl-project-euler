@@ -32,7 +32,7 @@
 (defun generate-factors (x)
   (let ((vec (make-growable-vector 0)))
     (do ((i 1 (+ i 1)))
-        ((> i (ceiling (sqrt x))) vec)
+        ((> i (ceiling (/ x 2))) vec)
       (if (= 0 (mod x i))
           (vector-push-extend i vec)))))
 
@@ -52,3 +52,22 @@
                  (string= (reverse str) 
                           str))) 
              (sort vec #'>))))
+
+(defun problem5 (divisor-seq)
+  (do ((i 11 (+ i 1)))
+      ((null (find-if-not (lambda (x) 
+                            (= 0 (mod i x))) 
+                          divisor-seq)) i)))
+
+
+(defun problem6 (n)
+  (let ((square-of-sum (expt (/ (* n (+ n 1)) 2) 2))
+        (sum-of-squares (reduce #'+ (map 'list (lambda (x) (expt x 2)) (alexandria:iota n :start 1)))))
+    (- square-of-sum sum-of-squares)))
+
+(defun problem7 (number-of-primes-to-find)
+  (do* ((i 1 (+ i 1))
+        (count 0 (if (naive-primep i) 
+                     (+ count 1) 
+                     count)))
+       ((>= count number-of-primes-to-find) i)))
