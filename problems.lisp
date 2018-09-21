@@ -20,6 +20,12 @@
       (vector-push-extend fib-val vec))
     (reduce #'+ (remove-if-not (lambda (x) (= 0 (mod x 2))) vec))))
 
+(defun read-input (input-path vec)
+  (with-open-file (in-stream input-path)
+    (do ((ch (read-char in-stream) (read-char in-stream nil)))
+        ((null ch) vec)
+      (vector-push-extend ))))
+
 (defun naive-primep (x)
   (labels ((naive-primep-helper (x counter)
              (cond ((= 0 (mod x counter)) nil)
@@ -54,7 +60,7 @@
              (sort vec #'>))))
 
 (defun problem5 (divisor-seq)
-  (do ((i 11 (+ i 1)))
+  (do ((i 20 (+ i 20)))
       ((null (find-if-not (lambda (x) 
                             (= 0 (mod i x))) 
                           divisor-seq)) i)))
@@ -72,17 +78,22 @@
                      count)))
        ((>= count number-of-primes-to-find) i)))
 
+(defparameter *input-path* 
+  #P"~/quicklisp/local-projects/cl-project-euler/problem8Input.txt")
+
 (defun problem8 (input-seq adjacent-length)
   (labels 
-      ((problem8-helper (input-seq  
+      ((new-offset (input-seq)
+         (min (length input-seq) 1)) 
+       (problem8-helper (input-seq  
                          start 
                          end 
                          current-max)
          (cond ((> end (length input-seq)) current-max)
                (t (problem8-helper 
                    input-seq 
-                   (+ start 1)
-                   (+ end 1)
+                   (+ start (new-offset input-seq))
+                   (+ end 1 (new-offset input-seq))
                    (max current-max 
                         (reduce #'* input-seq :start start :end end)))))))
     (problem8-helper input-seq 0 (+ 0 adjacent-length) -1)))
