@@ -20,12 +20,6 @@
       (vector-push-extend fib-val vec))
     (reduce #'+ (remove-if-not (lambda (x) (= 0 (mod x 2))) vec))))
 
-(defun read-input (input-path vec)
-  (with-open-file (in-stream input-path)
-    (do ((ch (read-char in-stream) (read-char in-stream nil)))
-        ((null ch) vec)
-      (vector-push-extend ))))
-
 (defun naive-primep (x)
   (labels ((naive-primep-helper (x counter)
              (cond ((= 0 (mod x counter)) nil)
@@ -81,19 +75,30 @@
 (defparameter *input-path* 
   #P"~/quicklisp/local-projects/cl-project-euler/problem8Input.txt")
 
+(defun read-input (input-path vec)
+  (with-open-file (in-stream input-path)
+    (do ((ch (read-char in-stream) (read-char in-stream nil)))
+        ((null ch) vec)
+      (if (digit-char-p ch) 
+          (vector-push-extend (parse-integer (string ch)) vec)))))
+
+
 (defun problem8 (input-seq adjacent-length)
   (labels 
-      ((new-offset (input-seq)
-         (min (length input-seq) 1)) 
+      ((new-offset (input-seq start end)
+         (let ((zero-pos (position 0 input-seq :from-end t :start start :end end)))
+           (cond ((null zero-pos) 1)
+                 (t (- (+ zero-pos 1) start)))))
        (problem8-helper (input-seq  
                          start 
                          end 
                          current-max)
          (cond ((> end (length input-seq)) current-max)
-               (t (problem8-helper 
-                   input-seq 
-                   (+ start (new-offset input-seq))
-                   (+ end 1 (new-offset input-seq))
-                   (max current-max 
-                        (reduce #'* input-seq :start start :end end)))))))
+               (t 
+                (let ((offset (new-offset input-seq start end))) 
+                  (problem8-helper 
+                     input-seq 
+                     (+ start offset)
+                     (+ end offset)
+                     (max current-max (reduce #'* input-seq :start start :end end))))))))
     (problem8-helper input-seq 0 (+ 0 adjacent-length) -1)))
