@@ -102,3 +102,13 @@
                      (+ end offset)
                      (max current-max (reduce #'* input-seq :start start :end end))))))))
     (problem8-helper input-seq 0 (+ 0 adjacent-length) -1)))
+
+(defun problem9 (n)
+  (alexandria:map-combinations 
+   (lambda (comb) 
+     (destructuring-bind (a b c) comb
+       (cond ((and (= 1000 (+ a b c)) (= (* c c) 
+                                          (+ (* a a) (* b b)))) 
+              (format t "~A~%" (* a b c)))))) 
+   (alexandria:iota n :start 1) 
+   :length 3))
