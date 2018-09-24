@@ -75,7 +75,7 @@
 (defparameter *input-path* 
   #P"~/quicklisp/local-projects/cl-project-euler/problem8Input.txt")
 
-(defun read-input (input-path vec)
+(defun read-input-as-vector (input-path vec)
   (with-open-file (in-stream input-path)
     (do ((ch (read-char in-stream) (read-char in-stream nil)))
         ((null ch) vec)
@@ -112,3 +112,13 @@
               (format t "~A~%" (* a b c)))))) 
    (alexandria:iota n :start 1) 
    :length 3))
+
+(defun problem10 (n)
+  (let ((sum 2))
+    (do ((i 3 (+ i 2)))
+        ((>= i n) sum)
+      (if (naive-primep i) 
+          (setf sum (+ sum i))))))
+
+(defun read-input-as-grid (input-path vec)
+  1)
