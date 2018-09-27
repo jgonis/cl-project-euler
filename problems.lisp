@@ -72,7 +72,7 @@
                      count)))
        ((>= count number-of-primes-to-find) i)))
 
-(defparameter *input-path* 
+(defparameter *p8-input-path* 
   #P"~/quicklisp/local-projects/cl-project-euler/problem8Input.txt")
 
 (defun read-input-as-vector (input-path vec)
@@ -120,5 +120,14 @@
       (if (naive-primep i) 
           (setf sum (+ sum i))))))
 
+(defparameter *p11-input-path* 
+  #P"~/quicklisp/local-projects/cl-project-euler/problem11input.txt")
+
+
 (defun read-input-as-grid (input-path vec)
-  1)
+  (with-open-file (in-stream input-path)
+    (do ((line (read-line in-stream) (read-line in-stream nil)))
+        ((null line) vec)
+      (let* ((split-line (cl-utilities:split-sequence #\Space line))
+             (result-vec (map 'vector (lambda (x) (parse-integer x)) split-line)))
+        (vector-push-extend result-vec vec)))))
