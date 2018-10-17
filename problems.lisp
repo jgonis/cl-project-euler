@@ -129,5 +129,26 @@
     (do ((line (read-line in-stream) (read-line in-stream nil)))
         ((null line) vec)
       (let* ((split-line (cl-utilities:split-sequence #\Space line))
-             (result-vec (map 'vector (lambda (x) (parse-integer x)) split-line)))
+             (result-vec (map 'vector 
+                              (lambda (x) 
+                                (parse-integer x)) 
+                              split-line)))
         (vector-push-extend result-vec vec)))))
+
+;; (defun get-all-superclasses (class-obj)
+;;  (labels ((helper (class-obj lst)
+;;             (let ((superclasses (closer-mop:class-direct-superclasses 
+;;                                  class-obj)))
+;;               (cond ((null superclasses) lst)
+;;                     (t (mapcar (lambda (x) (helper x (cons (list x) lst))) 
+;;                                 superclasses))))))
+;;    (remove-duplicates (alexandria:flatten (helper class-obj (list))) 
+;;                       :test #'equalp)))
+
+(defclass grid ()
+  ((grid :initform nil))
+  (:documentation "An object representing a grid of values with x-y coordinates starting with at 0,0 in the top left corner"))
+
+(defmethod initialize-instance :after ((grid-instance grid) &key (x 1) (y 1))
+  (let ((arr (make-array (list x y) :element-type 'fixnum)))
+    (setf (slot-value grid-instance 'grid) arr)))
