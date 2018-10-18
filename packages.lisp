@@ -1,3 +1,7 @@
+(defpackage :grid
+  (:use #:cl)
+  (:export #:grid))
+
 (defpackage :cl-project-euler
-  (:use :cl)
-  (:export :problem1 :problem2))
+  (:use #:cl #:grid)
+  (:export #:problem1 #:problem2))

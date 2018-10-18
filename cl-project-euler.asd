@@ -5,4 +5,5 @@
   :licence "LGPL 3.0"
   :depends-on ("alexandria" "cl-utilities")
   :components ((:file "packages")
-               (:file "problems" :depends-on ("packages"))))
+               (:file "grid")
+               (:file "problems" :depends-on ("packages" "grid"))))
