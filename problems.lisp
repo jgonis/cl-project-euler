@@ -1,4 +1,4 @@
-(in-package :cl-project-euler)
+(in-package #:cl-project-euler)
 
 (defun make-growable-vector (initial-size) 
     (make-array initial-size :fill-pointer 0 :adjustable t))
